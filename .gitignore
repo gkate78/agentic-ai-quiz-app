@@ -1,0 +1,4 @@
+# Ignore virtual environment and secrets
+myenv/
+secrets/
+*.json
