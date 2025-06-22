@@ -1,6 +1,7 @@
 import streamlit as st
 import pandas as pd
 import random
+import json
 import gspread
 from google.oauth2.service_account import Credentials
 from datetime import datetime
@@ -13,7 +14,8 @@ SCOPES = [
     "https://www.googleapis.com/auth/spreadsheets",
     "https://www.googleapis.com/auth/drive"
 ]
-creds = Credentials.from_service_account_file("secrets/agenticaiquiz-3ebc6b9066f6.json", scopes=SCOPES)
+creds_dict = json.loads(st.secrets["GOOGLE_CREDENTIALS"])
+creds = Credentials.from_service_account_info(creds_dict, scopes=SCOPES)
 client = gspread.authorize(creds)
 sheet = client.open(SHEET_NAME).worksheet(WORKSHEET_NAME)
 
