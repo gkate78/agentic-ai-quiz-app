@@ -5,6 +5,8 @@ import json
 import gspread
 from google.oauth2.service_account import Credentials
 from datetime import datetime
+from question_generator import generate_quiz_questions
+
 
 # --- GOOGLE SHEETS SETUP ---
 SHEET_NAME = "AgenticAI_Quiz_Leaderboard"
@@ -21,7 +23,16 @@ creds = Credentials.from_service_account_info(creds_dict, scopes=SCOPES)
 client = gspread.authorize(creds)
 sheet = client.open(SHEET_NAME).worksheet(WORKSHEET_NAME)
 
+def get_fresh_questions():
+    return generate_quiz_questions(
+        api_key=st.secrets["GEMINI_API_KEY"],
+        topic="Agentic AI",
+        num_questions=3
+    )
+
 # --- STREAMLIT SESSION STATE INIT ---
+if "questions" not in st.session_state:
+    st.session_state.questions = get_fresh_questions()
 if "name" not in st.session_state:
     st.session_state.name = ""
 if "score" not in st.session_state:
@@ -34,6 +45,7 @@ if "quiz_started" not in st.session_state:
     st.session_state.quiz_started = False
 if "show_leaderboard" not in st.session_state:
     st.session_state.show_leaderboard = False
+
 
 # --- AGENT FEEDBACK FUNCTION ---
 def agent_feedback(question, user_answer, correct_answer):
@@ -86,7 +98,8 @@ else:
             st.session_state.step += 1
             st.rerun()
     else:
-        st.success(f"🎉 You've completed the quiz! Your score: {st.session_state.score} / {len(quiz_data)}")
+        st.success(f"🎉 You've completed the quiz! Your score: {st.session_state.score} / {len(st.session_state.questions)}")
+
 
         # --- SAVE TO GOOGLE SHEET ---
         if not st.session_state.show_leaderboard:
@@ -146,4 +159,5 @@ else:
             st.session_state.feedback = ""
             st.session_state.quiz_started = False
             st.session_state.show_leaderboard = False
+            st.session_state.questions = get_fresh_questions()
             st.rerun()
