@@ -102,7 +102,7 @@ with tab1:
             st.rerun()
             
 else:
-st.success(f"🎉 You've completed the quiz! Your score: {st.session_state.score} / {len(st.session_state.questions)}")
+st.success(f"🎉 You've completed the quiz! Your score: {st.session_state.score} / {len(quiz_data)}")
 
 
         # --- SAVE TO GOOGLE SHEET ---
