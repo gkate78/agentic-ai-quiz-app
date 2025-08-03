@@ -3,8 +3,11 @@ import pandas as pd
 import random
 import json
 import gspread
+import altair as alt
 from google.oauth2.service_account import Credentials
 from datetime import datetime
+import uuid
+
 
 # --- GOOGLE SHEETS SETUP ---
 SHEET_NAME = "AgenticAI_Quiz_Leaderboard"
