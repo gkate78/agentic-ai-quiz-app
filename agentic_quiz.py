@@ -74,12 +74,13 @@ quiz_data = [
 
 # --- START PAGE ---
 st.title("🤖 Agentic AI Quiz Challenge")
+st.markdown("Test your knowledge and learn how Agentic AI thinks!")
 tab1, tab2 = st.tabs(["🎮 Quiz", "📊 Dashboard"])
 with tab1:
     
 
 
-   if not st.session_state.quiz_started:
+    if not st.session_state.quiz_started:
        st.subheader("Enter your name to begin:")
        name = st.text_input("Your name")
        if st.button("Start Quiz") and name.strip():
@@ -100,9 +101,11 @@ with tab1:
             st.session_state.feedback = agent_feedback(current['question'], user_answer, current['answer'])
             st.session_state.step += 1
             st.rerun()
-            
-else:
-st.success(f"🎉 You've completed the quiz! Your score: {st.session_state.score} / {len(quiz_data)}")
+    else:
+        st.success(f"🎉 You've completed the quiz! Your score: {st.session_state.score} / {len(quiz_data)}")
+
+
+
 
 
         # --- SAVE TO GOOGLE SHEET ---
